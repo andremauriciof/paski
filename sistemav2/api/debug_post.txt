@@ -1,0 +1,209 @@
+Array
+(
+    [cliente_id] => 1
+    [equipamento_id] => 1
+    [descricao_problema] => asd
+    [status] => Aguardando Peça
+    [tecnico_id] => 1
+    [valor_orcado] => 44
+    [valor_final] => 33
+    [observacoes] => teste
+    [checklist_marks] => Array
+        (
+            [0] => 3
+            [1] => 4
+            [2] => 5
+        )
+
+)
+
+---
+Array
+(
+    [cliente_id] => 1
+    [equipamento_id] => 1
+    [descricao_problema] => 222
+    [status] => Executando
+    [tecnico_id] => 1
+    [valor_orcado] => 22
+    [valor_final] => 22
+    [observacoes] => 222
+    [checklist_marks] => Array
+        (
+            [0] => 1
+            [1] => 3
+            [2] => 4
+        )
+
+)
+
+---
+Array
+(
+    [cliente_id] => 1
+    [equipamento_id] => 1
+    [descricao_problema] => aa
+    [status] => Executando
+    [tecnico_id] => 1
+    [valor_orcado] => 2
+    [valor_final] => 2
+    [observacoes] => 222
+    [checklist_marks] => Array
+        (
+            [0] => 3
+            [1] => 5
+            [2] => 6
+        )
+
+)
+
+---
+Array
+(
+    [cliente_id] => 1
+    [equipamento_id] => 1
+    [descricao_problema] => aa
+    [status] => Executando
+    [tecnico_id] => 1
+    [valor_orcado] => 2
+    [valor_final] => 2
+    [observacoes] => 222
+    [checklist_marks] => Array
+        (
+            [0] => 3
+            [1] => 5
+            [2] => 6
+        )
+
+)
+
+---
+Array
+(
+    [cliente_id] => 1
+    [equipamento_id] => 1
+    [descricao_problema] => aa
+    [status] => Executando
+    [tecnico_id] => 1
+    [valor_orcado] => 2
+    [valor_final] => 2
+    [observacoes] => 222
+    [checklist_marks] => Array
+        (
+            [0] => 3
+            [1] => 5
+            [2] => 6
+        )
+
+)
+
+---
+Array
+(
+    [cliente_id] => 1
+    [equipamento_id] => 1
+    [descricao_problema] => aaa
+    [status] => Executando
+    [tecnico_id] => 1
+    [valor_orcado] => 22
+    [valor_final] => 22
+    [observacoes] => 
+    [checklist_marks] => Array
+        (
+            [0] => 2
+            [1] => 3
+            [2] => 4
+        )
+
+)
+
+---
+Array
+(
+    [cliente_id] => 1
+    [equipamento_id] => 1
+    [descricao_problema] => aaa
+    [status] => Executando
+    [tecnico_id] => 1
+    [valor_orcado] => 22
+    [valor_final] => 22
+    [observacoes] => 
+    [checklist_marks] => Array
+        (
+            [0] => 2
+            [1] => 3
+            [2] => 4
+        )
+
+)
+
+---
+Array
+(
+    [cliente_id] => 1
+    [equipamento_id] => 1
+    [descricao_problema] => aaa
+    [status] => Executando
+    [tecnico_id] => 1
+    [valor_orcado] => 22
+    [valor_final] => 22
+    [observacoes] => 
+    [checklist_marks] => Array
+        (
+            [0] => 2
+            [1] => 3
+            [2] => 4
+        )
+
+)
+
+---
+Array
+(
+    [cliente_id] => 1
+    [equipamento_id] => 1
+    [descricao_problema] => 123
+    [status] => Executando
+    [tecnico_id] => 1
+    [valor_orcado] => 11
+    [valor_final] => 132
+    [observacoes] => 13123
+    [checklist_marks] => Array
+        (
+            [0] => 1
+            [1] => 3
+            [2] => 13
+            [3] => 19
+        )
+
+)
+
+---
+Array
+(
+    [id] => 
+    [cliente_id] => 3
+    [equipamento_id] => 4
+    [descricao_problema] => QUEBRADO
+    [status] => Orçamento
+    [tecnico_id] => 2
+    [valor_orcado] => 123
+    [valor_final] => 321
+    [observacoes] => 
+    [checklist_marks] => 3,4,7
+)
+
+---
+Array
+(
+    [id] => 
+    [cliente_id] => 3
+    [equipamento_id] => 4
+    [descricao_problema] => QUEBROU
+    [status] => Orçamento
+    [tecnico_id] => 2
+    [observacoes] => 
+    [checklist_marks] => [2,3,4,39,44]
+)
+
+---

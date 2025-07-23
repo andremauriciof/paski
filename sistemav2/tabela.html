@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gerenciamento de Telas</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .user-info {
+            display: flex;
+            align-items: center;
+            margin-right: 20px;
+        }
+        .user-info i {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegação -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><i class="fas fa-mobile-alt me-2"></i>Sistema de Telas</a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="tabela.php">Tabela de Preços</a>
+                    </li>
+                    <?php if ($nivelAcesso >= 2): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="configuracoes.php">Configurações</a>
+                    </li>
+                    <?php endif; ?>
+                </ul>
+                
+                <div class="user-info text-white">
+                    <i class="fas fa-user-circle"></i>
+                    <span><?php echo htmlspecialchars($nomeUsuario); ?></span>
+                </div>
+                
+                <a href="logout.php" class="btn btn-outline-light">
+                    <i class="fas fa-sign-out-alt me-1"></i>Sair
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Conteúdo da página -->
+    <div class="container mt-4">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h2>Tabela de Preços de Telas</h2>
+            </div>
+            <div class="col-md-6 text-end">
+                <button type="button" class="btn btn-primary" id="btnNovaEntrada">
+                    <i class="fas fa-plus me-1"></i>Nova Entrada
+                </button>
+            </div>
+        </div>
+
+        <!-- Filtros -->
+        <div class="card mb-4">
+            <div class="card-header bg-light">
+                <h5 class="mb-0">Filtros</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="filtroMarca" class="form-label">Marca</label>
+                        <select class="form-select" id="filtroMarca">
+                            <option value="">Todas as marcas</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="filtroModelo" class="form-label">Modelo</label>
+                        <select class="form-select" id="filtroModelo">
+                            <option value="">Todos os modelos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="filtroFornecedor" class="form-label">Fornecedor</label>
+                        <input type="text" class="form-control" id="filtroFornecedor" placeholder="Nome do fornecedor">
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button type="button" class="btn btn-secondary" id="btnLimparFiltros">Limpar</button>
+                    <button type="button" class="btn btn-primary" id="btnFiltrar">Filtrar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela de dados -->
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Data</th>
+                                <th>Fornecedor</th>
+                                <th>Marca</th>
+                                <th>Modelo</th>
+                                <th>Custo</th>
+                                <th>Mão de Obra</th>
+                                <th>Total</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabelaDados">
+                            <!-- Dados serão carregados via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div id="mensagemSemDados" class="text-center py-3 d-none">
+                    <p class="text-muted">Nenhum registro encontrado.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de edição/criação -->
+    <div class="modal fade" id="modalTela" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTituloTela">Nova Entrada</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formTela">
+                        <input type="hidden" id="idTela">
+                        
+                        <div class="mb-3">
+                            <label for="data" class="form-label">Data</label>
+                            <input type="date" class="form-control" id="data" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="fornecedor" class="form-label">Fornecedor</label>
+                            <input type="text" class="form-control" id="fornecedor" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="marca" class="form-label">Marca</label>
+                            <input type="text" class="form-control" id="marca" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="modelo" class="form-label">Modelo</label>
+                            <input type="text" class="form-control" id="modelo" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="custo" class="form-label">Custo (R$)</label>
+                            <input type="number" step="0.01" min="0" class="form-control" id="custo" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="maodeobra" class="form-label">Mão de Obra (R$)</label>
+                            <input type="number" step="0.01" min="0" class="form-control" id="maodeobra" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="valortotal" class="form-label">Valor Total (R$)</label>
+                            <input type="number" step="0.01" min="0" class="form-control" id="valortotal" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnSalvar">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de confirmação de exclusão -->
+    <div class="modal fade" id="modalConfirmacao" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Exclusão</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir este registro?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">Excluir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Variáveis globais
+            let configuracoes = {
+                fatorCusto: 1.2,
+                fatorMaoObra: 1.1,
+                valorAdicional: 10
+            };
+            let telaParaExcluir = null;
+            
+            // Elementos DOM
+            const tabelaDados = document.getElementById('tabelaDados');
+            const mensagemSemDados = document.getElementById('mensagemSemDados');
+            const modalTela = new bootstrap.Modal(document.getElementById('modalTela'));
+            const modalConfirmacao = new bootstrap.Modal(document.getElementById('modalConfirmacao'));
+            const filtroMarca = document.getElementById('filtroMarca');
+            const filtroModelo = document.getElementById('filtroModelo');
+            
+            // Carregar dados iniciais
+            carregarConfiguracoes();
+            carregarMarcas();
+            carregarTelas();
+            
+            // Event listeners
+            document.getElementById('btnNovaEntrada').addEventListener('click', abrirModalNovaTela);
+            document.getElementById('btnSalvar').addEventListener('click', salvarTela);
+            document.getElementById('btnConfirmarExclusao').addEventListener('click', confirmarExclusao);
+            document.getElementById('btnFiltrar').addEventListener('click', carregarTelas);
+            document.getElementById('btnLimparFiltros').addEventListener('click', limparFiltros);
+            document.getElementById('filtroMarca').addEventListener('change', atualizarModelosPorMarca);
+            
+            // Adicionar listeners para cálculo automático
+            document.getElementById('custo').addEventListener('input', calcularValorTotal);
+            document.getElementById('maodeobra').addEventListener('input', calcularValorTotal);
+            
+            // Funções
+            function carregarConfiguracoes() {
+                fetch('api.php?action=configuracoes')
+                    .then(response => response.json())
+                    .then(data => {
+                        if (!data.error) {
+                            configuracoes = data;
+                        }
+                    })
+                    .catch(error => console.error('Erro ao carregar configurações:', error));
+            }
+            
+            function carregarMarcas() {
+                fetch('api.php?action=marcas')
+                    .then(response => response.json())
+                    .then(marcas => {
+                        if (Array.isArray(marcas)) {
+                            filtroMarca.innerHTML = '<option value="">Todas as marcas</option>';
+                            marcas.forEach(marca => {
+                                const option = document.createElement('option');
+                                option.value = marca;
+                                option.textContent = marca;
+                                filtroMarca.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Erro ao carregar marcas:', error));
+            }
+            
+            function atualizarModelosPorMarca() {
+                const marcaSelecionada = filtroMarca.value;
+                let url = 'api.php?action=modelos';
+                
+                if (marcaSelecionada) {
+                    url += `&marca=${encodeURIComponent(marcaSelecionada)}`;
+                }
+                
+                fetch(url)
+                    .then(response => response.json())
+                    .then(modelos => {
+                        if (Array.isArray(modelos)) {
+                            filtroModelo.innerHTML = '<option value="">Todos os modelos</option>';
+                            modelos.forEach(modelo => {
+                                const option = document.createElement('option');
+                                option.value = modelo;
+                                option.textContent = modelo;
+                                filtroModelo.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => console.error('Erro ao carregar modelos:', error));
+            }
+            
+            function carregarTelas() {
+                const marca = filtroMarca.value;
+                const modelo = filtroModelo.value;
+                const fornecedor = document.getElementById('filtroFornecedor').value;
+                
+                let url = 'api.php';
+                const params = [];
+                
+                if (marca) params.push(`marca=${encodeURIComponent(marca)}`);
+                if (modelo) params.push(`modelo=${encodeURIComponent(modelo)}`);
+                if (fornecedor) params.push(`fornecedor=${encodeURIComponent(fornecedor)}`);
+                
+                if (params.length > 0) {
+                    url += `?${params.join('&')}`;
+                }
+                
+                fetch(url)
+                    .then(response => response.json())
+                    .then(telas => {
+                        if (Array.isArray(telas)) {
+                            renderizarTabela(telas);
+                        } else if (telas.error) {
+                            console.error('Erro ao carregar telas:', telas.error);
+                        }
+                    })
+                    .catch(error => console.error('Erro na requisição:', error));
+            }
+            
+            function renderizarTabela(telas) {
+                tabelaDados.innerHTML = '';
+                
+                if (telas.length === 0) {
+                    mensagemSemDados.classList.remove('d-none');
+                    return;
+                }
+                
+                mensagemSemDados.classList.add('d-none');
+                
+                telas.forEach(tela => {
+                    const tr = document.createElement('tr');
+                    
+                    // Formatar data para exibição
+                    const data = new Date(tela.data);
+                    const dataFormatada = data.toLocaleDateString('pt-BR');
+                    
+                    tr.innerHTML = `
+                        <td>${tela.id}</td>
+                        <td>${dataFormatada}</td>
+                        <td>${tela.fornecedor}</td>
+                        <td>${tela.marca}</td>
+                        <td>${tela.modelo}</td>
+                        <td>R$ ${tela.custo.toFixed(2)}</td>
+                        <td>R$ ${tela.maodeobra.toFixed(2)}</td>
+                        <td>R$ ${tela.valortotal.toFixed(2)}</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary me-1 btn-editar" data-id="${tela.id}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger btn-excluir" data-id="${tela.id}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    `;
+                    
+                    tabelaDados.appendChild(tr);
+                });
+                
+                // Adicionar event listeners para os botões de ação
+                document.querySelectorAll('.btn-editar').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        editarTela(id);
+                    });
+                });
+                
+                document.querySelectorAll('.btn-excluir').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        abrirModalConfirmacao(id);
+                    });
+                });
+            }
+            
+            function abrirModalNovaTela() {
+                document.getElementById('modalTituloTela').textContent = 'Nova Entrada';
+                document.getElementById('formTela').reset();
+                document.getElementById('idTela').value = '';
+                
+                // Definir a data atual como padrão
+                const hoje = new Date().toISOString().split('T')[0];
+                document.getElementById('data').value = hoje;
+                
+                modalTela.show();
+            }
+            
+            function editarTela(id) {
+                fetch(`api.php?id=${id}`)
+                    .then(response => response.json())
+                    .then(tela => {
+                        if (tela.id) {
+                            document.getElementById('modalTituloTela').textContent = 'Editar Entrada';
+                            
+                            document.getElementById('idTela').value = tela.id;
+                            document.getElementById('data').value = tela.data.split('T')[0];
+                            document.getElementById('fornecedor').value = tela.fornecedor;
+                            document.getElementById('marca').value = tela.marca;
+                            document.getElementById('modelo').value = tela.modelo;
+                            document.getElementById('custo').value = tela.custo;
+                            document.getElementById('maodeobra').value = tela.maodeobra;
+                            document.getElementById('valortotal').value = tela.valortotal;
+                            
+                            modalTela.show();
+                        } else if (tela.error) {
+                            alert('Erro ao carregar dados: ' + tela.error);
+                        }
+                    })
+                    .catch(error => console.error('Erro ao carregar tela:', error));
+            }
+            
+            function salvarTela() {
+                const id = document.getElementById('idTela').value;
+                const data = document.getElementById('data').value;
+                const fornecedor = document.getElementById('fornecedor').value;
+                const marca = document.getElementById('marca').value;
+                const modelo = document.getElementById('modelo').value;
+                const custo = parseFloat(document.getElementById('custo').value);
+                const maodeobra = parseFloat(document.getElementById('maodeobra').value);
+                const valortotal = parseFloat(document.getElementById('valortotal').value);
+                
+                if (!data || !fornecedor || !marca || !modelo || isNaN(custo) || isNaN(maodeobra) || isNaN(valortotal)) {
+                    alert('Por favor, preencha todos os campos corretamente.');
+                    return;
+                }
+                
+                const dadosTela = {
+                    id: id ? parseInt(id) : null,
+                    data,
+                    fornecedor,
+                    marca,
+                    modelo,
+                    custo,
+                    maodeobra,
+                    valortotal
+                };
+                
+                const metodo = id ? 'PUT' : 'POST';
+                
+                fetch('api.php', {
+                    method: metodo,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(dadosTela)
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        modalTela.hide();
+                        carregarTelas();
+                        carregarMarcas();
+                    } else if (result.error) {
+                        alert('Erro ao salvar: ' + result.error);
+                    }
+                })
+                .catch(error => console.error('Erro na requisição:', error));
+            }
+            
+            function abrirModalConfirmacao(id) {
+                telaParaExcluir = id;
+                modalConfirmacao.show();
+            }
+            
+            function confirmarExclusao() {
+                if (!telaParaExcluir) return;
+                
+                fetch(`api.php?id=${telaParaExcluir}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        modalConfirmacao.hide();
+                        carregarTelas();
+                        carregarMarcas();
+                    } else if (result.error) {
+                        alert('Erro ao excluir: ' + result.error);
+                    }
+                })
+                .catch(error => console.error('Erro na requisição:', error));
+            }
+            
+            function limparFiltros() {
+                filtroMarca.value = '';
+                filtroModelo.value = '';
+                document.getElementById('filtroFornecedor').value = '';
+                carregarTelas();
+            }
+            
+            function calcularValorTotal() {
+                const custoInput = document.getElementById('custo');
+                const maoDeObraInput = document.getElementById('maodeobra');
+                const valorTotalInput = document.getElementById('valortotal');
+                
+                if (custoInput.value && maoDeObraInput.value) {
+                    const custo = parseFloat(custoInput.value);
+                    const maoDeObra = parseFloat(maoDeObraInput.value);
+                    
+                    if (!isNaN(custo) && !isNaN(maoDeObra)) {
+                        // Aplicar fórmula usando as configurações do sistema
+                        const total = (((custo * configuracoes.fatorCusto) + maoDeObra) * configuracoes.fatorMaoObra) + configuracoes.valorAdicional;
+                        valorTotalInput.value = total.toFixed(2);
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

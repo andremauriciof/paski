@@ -9,6 +9,21 @@ requireLogin();
 $method = $_SERVER['REQUEST_METHOD'];
 $action = $_GET['action'] ?? $_POST['action'] ?? '';
 
+if (isset($_GET['action']) && $_GET['action'] === 'recent') {
+    $db = new Database();
+    $stmt = $db->query("
+        SELECT os.id, c.nome as cliente_nome, CONCAT(e.marca, ' ', e.modelo) as equipamento, os.status, os.data_entrada
+        FROM ordens_servico os
+        LEFT JOIN clientes c ON os.cliente_id = c.id
+        LEFT JOIN equipamentos e ON os.equipamento_id = e.id
+        ORDER BY os.criado_em DESC
+        LIMIT 5
+    ");
+    $ordens = $stmt->fetchAll();
+    echo json_encode(['success' => true, 'data' => $ordens]);
+    exit;
+}
+
 try {
     $db = new Database();
     

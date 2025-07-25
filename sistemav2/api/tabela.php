@@ -47,8 +47,11 @@ try {
                 $whereClause = !empty($where) ? 'WHERE ' . implode(' AND ', $where) : '';
                 
                 // Se não especificou paginação, retornar todos os dados
-                if ($page === 0 || $limit === 0) {
+                if ($page === 0) {
                     $sql = "SELECT * FROM tabelapreco $whereClause ORDER BY Data DESC, Marca, Modelo";
+                    if ($limit > 0) {
+                        $sql .= " LIMIT $limit";
+                    }
                     $stmt = $db->query($sql, $params);
                     $telas = $stmt->fetchAll();
                     echo json_encode([

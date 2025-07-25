@@ -1,0 +1,123 @@
+/* CSS exclusivo para mobile (até 600px) */
+@media (max-width: 600px), (pointer: coarse) {
+  .header-main-wrapper {
+    background: #fff !important;
+    width: 100vw;
+    min-height: 56px;
+    box-shadow: 0 2px 8px rgba(0,85,199,0.08);
+    border-bottom: 1.5px solid #e0e7ef;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-row {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    height: 56px !important;
+    padding: 0 6px !important;
+    gap: 0 !important;
+    width: 100vw !important;
+  }
+  .header-left {
+    min-width: 48px;
+    justify-content: flex-start !important;
+  }
+  .header-center {
+    flex-grow: 1 !important;
+    justify-content: center !important;
+    align-items: center !important;
+    display: flex !important;
+  }
+  .header-logo {
+    max-width: 110px !important;
+    max-height: 40px !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+  .header-right {
+    min-width: 48px;
+    justify-content: flex-end !important;
+    gap: 6px !important;
+  }
+  .header-right .btn, .header-right a {
+    padding: 0 4px !important;
+    font-size: 1.2rem !important;
+  }
+  /* Botão principal (ex: Novo Cliente) */
+  .btn-primary, .btn.btn-primary {
+    width: 90% !important;
+    margin: 0 auto 10px auto !important;
+    display: block !important;
+    font-size: 1.05rem !important;
+    padding: 0.7rem 0 !important;
+    position: relative;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  /* Título e botão principal */
+  h2, h3, h4 {
+    font-size: 1.2rem !important;
+    margin-bottom: 10px !important;
+    text-align: center !important;
+  }
+  .page-title-bar, .page-header, .titulo-barra, .titulo-barra-clientes {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+    margin-bottom: 10px !important;
+  }
+  /* Corrigir sobreposição do botão principal */
+  .btn-primary + .page-title-bar, .btn-primary + h2, .btn-primary + h3 {
+    margin-top: 10px !important;
+  }
+  /* Input-group busca */
+  .input-group {
+    flex-wrap: nowrap !important;
+    align-items: center !important;
+    gap: 0 !important;
+  }
+  .input-group-text {
+    min-width: 36px !important;
+    padding: 0.4rem 0.5rem !important;
+    font-size: 1.1rem !important;
+  }
+  .form-control, .form-select {
+    font-size: 1rem !important;
+    padding: 0.5rem 0.7rem !important;
+    margin-bottom: 8px !important;
+  }
+  /* Botão Limpar */
+  .btn-secondary, .btn.btn-secondary {
+    width: 60% !important;
+    margin: 0 auto 10px auto !important;
+    display: block !important;
+    font-size: 1rem !important;
+    padding: 0.6rem 0 !important;
+  }
+  /* Cartão de cliente */
+  .card, .lista-clientes .card {
+    padding: 16px 10px !important;
+    margin-bottom: 18px !important;
+    border-radius: 12px !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06) !important;
+  }
+  .lista-clientes .card > * {
+    margin-bottom: 6px !important;
+  }
+  .lista-clientes .card:last-child {
+    margin-bottom: 0 !important;
+  }
+  /* Títulos */
+  h2, h3, h4 {
+    font-size: 1.2rem !important;
+    margin-bottom: 10px !important;
+  }
+  /* Ajuste geral de espaçamento */
+  .mb-3, .mb-4, .mt-4, .mt-3 {
+    margin-bottom: 10px !important;
+    margin-top: 10px !important;
+  }
+} 

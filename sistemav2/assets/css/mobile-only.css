@@ -1,0 +1,144 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #f7f7f7;
+  color: #222;
+}
+.mobile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,85,199,0.08);
+  padding: 0 12px;
+  height: 56px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.hamburger, .mobile-add {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: #0055c7;
+  padding: 4px 8px;
+  cursor: pointer;
+}
+.mobile-logo {
+  font-weight: bold;
+  font-size: 1.3rem;
+  color: #0055c7;
+  letter-spacing: 1px;
+}
+.mobile-menu {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: 80vw;
+  max-width: 320px;
+  background: #fff;
+  box-shadow: 2px 0 16px rgba(0,0,0,0.08);
+  z-index: 200;
+  transform: translateX(-100%);
+  transition: transform 0.2s;
+  padding-top: 56px;
+  display: flex;
+  flex-direction: column;
+}
+.mobile-menu.show {
+  transform: translateX(0);
+}
+.close-menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  font-size: 1.7rem;
+  color: #f44336;
+  cursor: pointer;
+}
+.mobile-menu ul {
+  list-style: none;
+  padding: 0 0 0 16px;
+  margin: 0;
+}
+.mobile-menu li {
+  margin-bottom: 18px;
+}
+.mobile-menu a {
+  color: #0055c7;
+  text-decoration: none;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.mobile-main {
+  padding: 16px 8px 32px 8px;
+  max-width: 480px;
+  margin: 0 auto;
+}
+.mobile-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 12px 0 18px 0;
+  text-align: center;
+  color: #0055c7;
+}
+.mobile-search {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+.mobile-search input {
+  flex: 1;
+  padding: 10px 12px;
+  border: 1.5px solid #0055c7;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+.mobile-search button {
+  background: #0055c7;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0 14px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+.mobile-client-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.mobile-client-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,85,199,0.08);
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.client-name {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #0055c7;
+  margin-bottom: 2px;
+}
+.client-info {
+  font-size: 1rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+@media (max-width: 400px) {
+  .mobile-header, .mobile-main {
+    padding-left: 2px;
+    padding-right: 2px;
+  }
+  .mobile-client-card {
+    padding: 10px 4px;
+  }
+} 

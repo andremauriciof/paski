@@ -6,6 +6,33 @@ header('Content-Type: application/json');
 
 requireLogin();
 
+if (isset($_GET['action']) && $_GET['action'] === 'summary') {
+    $db = new Database();
+    $clientes = $db->query('SELECT COUNT(*) as total FROM clientes')->fetch()['total'];
+    $equipamentos = $db->query('SELECT COUNT(*) as total FROM equipamentos')->fetch()['total'];
+    $total_os = $db->query('SELECT COUNT(*) as total FROM ordens_servico')->fetch()['total'];
+    $os_abertas = $db->query("SELECT COUNT(*) as total FROM ordens_servico WHERE status IN ('Orçamento', 'Executando', 'Aguardando Peça')")->fetch()['total'];
+    $os_finalizadas = $db->query("SELECT COUNT(*) as total FROM ordens_servico WHERE status IN ('Finalizada', 'Entregue')")->fetch()['total'];
+    $tabela = $db->query('SELECT COUNT(*) as total FROM tabelapreco')->fetch()['total'];
+    // Status das ordens
+    $status = $db->query('SELECT status, COUNT(*) as total FROM ordens_servico GROUP BY status')->fetchAll();
+    $ordensStatus = [];
+    foreach ($status as $s) $ordensStatus[$s['status']] = (int)$s['total'];
+    echo json_encode([
+        'success' => true,
+        'clientes' => (int)$clientes,
+        'equipamentos' => (int)$equipamentos,
+        'ordens' => (int)$total_os,
+        'tabela' => (int)$tabela,
+        'total_os' => (int)$total_os,
+        'os_abertas' => (int)$os_abertas,
+        'os_finalizadas' => (int)$os_finalizadas,
+        'alertas' => [],
+        'ordensStatus' => $ordensStatus
+    ]);
+    exit;
+}
+
 try {
     $db = new Database();
     

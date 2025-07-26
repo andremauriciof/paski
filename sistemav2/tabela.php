@@ -93,31 +93,31 @@ ob_start();
                     <input type="hidden" id="idTela">
                     <div class="mb-3">
                         <label for="data" class="form-label">Data</label>
-                        <input type="date" class="form-control" id="data" required>
+                        <input type="date" class="form-control" id="data" required placeholder=" ">
                     </div>
                     <div class="mb-3">
                         <label for="fornecedor" class="form-label">Fornecedor</label>
-                        <input type="text" class="form-control" id="fornecedor" required>
+                        <input type="text" class="form-control" id="fornecedor" required placeholder=" ">
                     </div>
                     <div class="mb-3">
                         <label for="marca" class="form-label">Marca</label>
-                        <input type="text" class="form-control" id="marca" required>
+                        <input type="text" class="form-control" id="marca" required placeholder=" ">
                     </div>
                     <div class="mb-3">
                         <label for="modelo" class="form-label">Modelo</label>
-                        <input type="text" class="form-control" id="modelo" required>
+                        <input type="text" class="form-control" id="modelo" required placeholder=" ">
                     </div>
                     <div class="mb-3">
                         <label for="custo" class="form-label">Custo (R$)</label>
-                        <input type="number" step="0.01" min="0" class="form-control" id="custo" required>
+                        <input type="number" step="0.01" min="0" class="form-control" id="custo" required placeholder=" ">
                     </div>
                     <div class="mb-3">
                         <label for="maodeobra" class="form-label">Mão de Obra (R$)</label>
-                        <input type="number" step="0.01" min="0" class="form-control" id="maodeobra" required>
+                        <input type="number" step="0.01" min="0" class="form-control" id="maodeobra" required placeholder=" ">
                     </div>
                     <div class="mb-3">
                         <label for="valortotal" class="form-label">Valor Total (R$)</label>
-                        <input type="number" step="0.01" min="0" class="form-control" id="valortotal" required>
+                        <input type="number" step="0.01" min="0" class="form-control" id="valortotal" required placeholder=" ">
                     </div>
                 </form>
             </div>

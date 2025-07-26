@@ -12,6 +12,7 @@ $pageContent = ob_get_clean();
 include __DIR__ . '/views/layout.php';
 ?>
 <script src="assets/js/pages/clientes-production.js"></script>
+<script src="assets/js/pages/ordens-production.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         if (typeof Clientes !== 'undefined') {

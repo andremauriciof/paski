@@ -27,56 +27,6 @@ try {
         echo json_encode(['success' => true]);
         exit;
     }
-    if ($method === 'GET' && $action === 'get_cores' && isset($_GET['usuario_id'])) {
-        $uid = intval($_GET['usuario_id']);
-        $stmt = $db->query("SELECT cor_primaria, cor_secundaria, cor_fundo, cor_menu, cor_card, cor_botao_primario, cor_botao_secundario, cor_footer, cor_header, cor_borda, cor_sucesso, cor_erro, cor_aviso, cor_hover_menu, cor_sidebar, cor_texto FROM usuarios_cores WHERE usuario_id = ?", [$uid]);
-        $cores = $stmt->fetch();
-        if (!$cores) {
-            $cores = [
-                'cor_primaria' => '#0055c7',
-                'cor_secundaria' => '#4f8cff',
-                'cor_fundo' => '#f5f5f5',
-                'cor_menu' => '#fff',
-                'cor_card' => '#fff',
-                'cor_botao_primario' => '#0055c7',
-                'cor_botao_secundario' => '#6c757d',
-                'cor_footer' => '#fff',
-                'cor_header' => '#fff',
-                'cor_borda' => '#e0e0e0',
-                'cor_sucesso' => '#43aa8b',
-                'cor_erro' => '#f44336',
-                'cor_aviso' => '#ffb300',
-                'cor_hover_menu' => '#eaf1fb',
-                'cor_sidebar' => '#fff',
-                'cor_texto' => '#222'
-            ];
-        }
-        echo json_encode(['success' => true, 'cores' => $cores]);
-        exit;
-    }
-    if ($method === 'POST' && $action === 'set_cores' && isset($_POST['usuario_id'])) {
-        $uid = intval($_POST['usuario_id']);
-        $fields = [
-            'cor_primaria', 'cor_secundaria', 'cor_fundo', 'cor_menu', 'cor_card', 'cor_botao_primario', 'cor_botao_secundario',
-            'cor_footer', 'cor_header', 'cor_borda', 'cor_sucesso', 'cor_erro', 'cor_aviso', 'cor_hover_menu', 'cor_sidebar', 'cor_texto'
-        ];
-        $values = [];
-        foreach ($fields as $f) {
-            $values[$f] = $_POST[$f] ?? '';
-        }
-        $db->query(
-            "INSERT INTO usuarios_cores (usuario_id, cor_primaria, cor_secundaria, cor_fundo, cor_menu, cor_card, cor_botao_primario, cor_botao_secundario, cor_footer, cor_header, cor_borda, cor_sucesso, cor_erro, cor_aviso, cor_hover_menu, cor_sidebar, cor_texto)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            ON DUPLICATE KEY UPDATE
-                cor_primaria=VALUES(cor_primaria), cor_secundaria=VALUES(cor_secundaria), cor_fundo=VALUES(cor_fundo), cor_menu=VALUES(cor_menu),
-                cor_card=VALUES(cor_card), cor_botao_primario=VALUES(cor_botao_primario), cor_botao_secundario=VALUES(cor_botao_secundario),
-                cor_footer=VALUES(cor_footer), cor_header=VALUES(cor_header), cor_borda=VALUES(cor_borda), cor_sucesso=VALUES(cor_sucesso),
-                cor_erro=VALUES(cor_erro), cor_aviso=VALUES(cor_aviso), cor_hover_menu=VALUES(cor_hover_menu), cor_sidebar=VALUES(cor_sidebar), cor_texto=VALUES(cor_texto)",
-            array_merge([$uid], array_values($values))
-        );
-        echo json_encode(['success' => true]);
-        exit;
-    }
 
     switch ($method) {
         case 'GET':

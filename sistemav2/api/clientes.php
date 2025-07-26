@@ -14,10 +14,8 @@ if (isset($_GET['action']) && $_GET['action'] === 'search') {
     $clientes = [];
     if ($q !== '') {
         require_once '../config/database.php';
-        $db = getDatabaseConnection();
-        $stmt = $db->prepare("SELECT id, nome, cpf_cnpj FROM clientes WHERE nome LIKE ? OR cpf_cnpj LIKE ? LIMIT 20");
-        $like = "%$q%";
-        $stmt->execute([$like, $like]);
+        $db = new Database();
+        $stmt = $db->query("SELECT id, nome, cpf_cnpj FROM clientes WHERE nome LIKE ? OR cpf_cnpj LIKE ? LIMIT 20", ["%$q%", "%$q%"]);
         $clientes = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     echo json_encode(['success' => true, 'data' => $clientes]);

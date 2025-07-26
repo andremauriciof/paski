@@ -207,3 +207,18 @@ Array
 )
 
 ---
+Array
+(
+    [id] => 
+    [cliente_id] => 3
+    [equipamento_id] => 4
+    [descricao_problema] => teste
+    [status] => Executando
+    [tecnico_id] => 1
+    [valor_orcado] => 12
+    [valor_final] => 23
+    [observacoes] => 
+    [checklist_marks] => [2,3,4]
+)
+
+---

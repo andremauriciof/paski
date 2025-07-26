@@ -29,18 +29,18 @@ try {
     }
 } catch (Exception $e) {}
 ?>
-<div class="background: #fff; width: 100vw; min-height: 64px; box-shadow: 0 2px 8px rgba(0,85,199,0.08); border-bottom: 1.5px solid #e0e7ef;"></div>
+<div style="background: #fff; width: 100vw; min-height: 64px; box-shadow: 0 2px 8px rgba(0,85,199,0.08); border-bottom: 1.5px solid #e0e7ef;">
   <div class="container-fluid d-flex align-items-center justify-content-between px-3" style="height: 64px;">
     <div class="d-flex align-items-center gap-2">
       <a class="d-flex align-items-center text-decoration-none" href="index.php">
         <?php if ($logoBase64Header): ?>
-          <img src="<?php echo $logoBase64Header; ?>" alt="Logo" style="max-height:54px;max-width:140px;border-radius:8px;box-shadow:none !important;background:transparent !important;padding:4px;">
+          <img src="<?php echo $logoBase64Header; ?>" alt="Logo" style="max-height:54px;max-width:140px;border-radius:8px;box-shadow:0 2px 8px rgba(0,85,199,0.10);background:#fff;padding:4px;">
         <?php else: ?>
           <i class="fas fa-tools fa-lg" style="color:#0055c7;"></i>
         <?php endif; ?>
       </a>
     </div>
-    <nav class="menu-central rounded-3 px-3 py-1 d-none d-lg-flex align-items-center" style="background:transparent; border:none; box-shadow:none;">
+    <nav class="menu-central rounded-3 px-3 py-1 d-none d-lg-flex align-items-center shadow-sm" style="background:#fff;">
       <ul class="nav gap-2">
         <li class="nav-item">
           <a class="nav-link menu-link <?php if (isset($currentPage) && $currentPage === 'dashboard') echo 'active'; ?>" href="index.php">
@@ -82,7 +82,6 @@ try {
           </a>
           <ul class="dropdown-menu border-0 mt-2" aria-labelledby="navbarDropdownConfiguracoes">
             <li><a class="dropdown-item text-primary <?php if (isset($currentPage) && $currentPage === 'empresa') echo 'active'; ?>" href="empresa.php"><i class="fas fa-building"></i> Empresa</a></li>
-            <li><a class="dropdown-item text-primary <?php if (isset($currentPage) && $currentPage === 'config-tema') echo 'active'; ?>" href="config-tema.php"><i class="fas fa-palette"></i> Tema</a></li>
           </ul>
         </li>
         <?php if (function_exists('hasPermission') && hasPermission('manage')): ?>
@@ -107,6 +106,10 @@ try {
       <a href="#" class="text-info" id="btnSobre" title="Sobre">
         <i class="fas fa-info-circle fa-lg" style="color: #007bff;"></i>
       </a>
+      <!-- Botão de alternância de modo de cores -->
+      <button id="btnToggleTheme" class="btn btn-outline-secondary" title="Alternar modo claro/escuro" style="border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;padding:0;">
+        <i id="iconTheme" class="fas fa-moon"></i>
+      </button>
       <a href="logout.php" class="text-danger" title="Sair"><i class="fas fa-sign-out-alt fa-lg"></i></a>
     </div>
     <!-- Menu mobile -->
@@ -152,73 +155,63 @@ try {
   </div>
 </div>
 <style>
-    .menu-central {
-      background: transparent !important;
-      box-shadow: none !important;
-      min-width: 1100px !important;
-      padding-left: 32px;
-      padding-right: 32px;
-      border: none !important;
-    }
-    .menu-central .nav {
-      gap: 2.5rem !important;
-    }
-    .menu-link {
-      color: #0055c7 !important;
-      font-weight: 500;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1.2rem !important;
-      border-radius: 6px;
-      transition: background 0.2s, color 0.2s;
-      border: none !important;
-      box-shadow: none !important;
-    }
-    .menu-link.active, .menu-link:hover {
-      background: #0055c7 !important;
-      color: #fff !important;
-      border: none !important;
-      box-shadow: none !important;
-      background-image: none !important;
-    }
-    .menu-link i {
-      color: #0055c7 !important;
-      min-width: 22px;
-      text-align: center;
-      font-size: 1.1rem;
-      border: none !important;
-      box-shadow: none !important;
-    }
-    .menu-link.active i, .menu-link:hover i {
-      color: #fff !important;
-      border: none !important;
-      box-shadow: none !important;
-    }
-    .menu-central .nav-item.dropdown:hover .dropdown-menu {
-      display: block !important;
-      margin-top: 0.5rem;
-    }
-    .menu-central .dropdown-menu {
-      transition: none;
-    }
-    .menu-central .dropdown-menu.show {
-      display: block !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-      z-index: 9999 !important;
-      z-index: 1055 !important;
-    }
-    .container-fluid, .page-content {
-      overflow: visible !important;
-    }
-    .d-flex.align-items-center.gap-3 {
-      margin-right: 24px;
-    }
-    @media (max-width: 991px) {
-      .menu-central { display: none !important; }
-    }
+.menu-central {
+  background: #fff !important;
+  box-shadow: none;
+  min-width: 1100px !important;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+.menu-central .nav {
+  gap: 2.5rem !important;
+}
+.menu-link {
+  color: #0055c7 !important;
+  font-weight: 500;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.2rem !important;
+  border-radius: 6px;
+  transition: background 0.2s, color 0.2s;
+}
+.menu-link.active, .menu-link:hover {
+  background: #0055c7 !important;
+  color: #fff !important;
+}
+.menu-link i {
+  color: #0055c7 !important;
+  min-width: 22px;
+  text-align: center;
+  font-size: 1.1rem;
+}
+.menu-link.active i, .menu-link:hover i {
+  color: #fff !important;
+}
+.menu-central .nav-item.dropdown:hover .dropdown-menu {
+  display: block !important;
+  margin-top: 0.5rem;
+}
+.menu-central .dropdown-menu {
+  transition: none;
+}
+.menu-central .dropdown-menu.show {
+  display: block !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  z-index: 9999 !important;
+  z-index: 1055 !important;
+}
+.container-fluid, .page-content {
+  overflow: visible !important;
+}
+.d-flex.align-items-center.gap-3 {
+  margin-right: 24px;
+}
+@media (max-width: 991px) {
+  .menu-central { display: none !important; }
+}
 </style>
 <div class="container-fluid" style="padding-top: 30px;">
   <div class="page-content" id="page-content">
@@ -319,6 +312,31 @@ document.addEventListener('DOMContentLoaded', function() {
     if (sobreBtn) sobreBtn.addEventListener('click', function(e) { e.preventDefault(); sobreModal.show(); });
     if (sobreBtnMobile) sobreBtnMobile.addEventListener('click', function(e) { e.preventDefault(); sobreModal.show(); });
   });
+</script>
+<script>
+// Alternância de tema claro/escuro
+function setTheme(dark) {
+  if (dark) {
+    document.body.classList.add('dark-theme');
+    localStorage.setItem('theme', 'dark');
+    document.getElementById('iconTheme').className = 'fas fa-sun';
+  } else {
+    document.body.classList.remove('dark-theme');
+    localStorage.setItem('theme', 'light');
+    document.getElementById('iconTheme').className = 'fas fa-moon';
+  }
+}
+// Detectar tema salvo
+(function() {
+  const saved = localStorage.getItem('theme');
+  setTheme(saved === 'dark');
+})();
+if (document.getElementById('btnToggleTheme')) {
+  document.getElementById('btnToggleTheme').addEventListener('click', function() {
+    const isDark = document.body.classList.contains('dark-theme');
+    setTheme(!isDark);
+  });
+}
 </script>
 </body>
 </html> 
